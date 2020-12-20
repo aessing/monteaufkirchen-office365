@@ -40,7 +40,6 @@ Write-Host "====================================================================
 #
 # Login
 #
-# Connect to Microsoft Teams - the old way
 Write-Host ""
 Write-Host " - Anmeldung bei Teams " -NoNewline
 Write-Host "(Anmeldung im Browser)" -ForegroundColor Yellow

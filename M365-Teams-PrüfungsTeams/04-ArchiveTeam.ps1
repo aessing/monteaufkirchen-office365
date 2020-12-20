@@ -28,11 +28,9 @@ Import-Module MicrosoftTeams -RequiredVersion "1.1.9"
 Write-Host ""
 Write-Host ""
 Write-Host "==============================================================================="
-Write-Host "| SchülerInnen werden zu Ihren Kanälen hinzugefügt"
-Write-Host "| " -NoNewline
-Write-Host "Zugriff wird erlaubt" -ForegroundColor Green
+Write-Host "| Team für Prüfungen wird archiviert"
 Write-Host "|"
-Write-Host "| Teams Name: " -NoNewline
+Write-Host "| Teams Name:         " -NoNewline
 Write-Host $Name -ForegroundColor Cyan
 Write-Host "==============================================================================="
 
@@ -47,31 +45,14 @@ Connect-MicrosoftTeams | Out-Null
 
 ###############################################################################
 #
-# Füge Lehrer als Owner zu jedem Kanal hinzu
+# Archiviere Team
 #
 $GroupId = Get-Team -DisplayName $Name
 
-Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Object {
-    $TeamChannel = $_
-    $TeamChannelName = $TeamChannel.DisplayName
-    Write-Host ""
-    Write-Host " - Füge SchülerInnen zum Kanal hinzu: " -NoNewline
-    Write-Host $TeamChannelName -ForegroundColor Cyan
-
-    Import-Csv -Path "schueler.csv" | ForEach-Object{ 
-        $Student = $_
-        $StudentName = $Student.upn
-
-        if ($Student.channel -eq $TeamChannel.DisplayName) {
-            Write-Host "     - SchülerIn: " -NoNewline
-            Write-Host $StudentName -ForegroundColor Cyan
-            $MemberExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName | Where-Object {$_.User -eq $Student.upn}
-            if ( -not $MemberExist ) {
-                Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName -User $_.upn
-            }
-        }
-    }
-}
+Write-Host ""
+Write-Host " - Archiviere das Team: " -NoNewline
+Write-Host $Name -ForegroundColor Cyan
+Set-TeamArchivedState -GroupId $GroupId.GroupId -Archived:$true -SetSpoSiteReadOnlyForMembers:$true | Out-Null
 
 ###############################################################################
 #

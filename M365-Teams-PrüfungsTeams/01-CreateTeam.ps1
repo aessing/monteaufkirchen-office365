@@ -35,7 +35,7 @@ Import-Module MicrosoftTeams -RequiredVersion "1.1.9"
 Write-Host ""
 Write-Host ""
 Write-Host "==============================================================================="
-Write-Host "| Teams für Prüfungen wird erstellt"
+Write-Host "| Team für Prüfungen wird erstellt"
 Write-Host "|"
 Write-Host "| Teams Name:         " -NoNewline
 Write-Host $Name -ForegroundColor Cyan
@@ -47,7 +47,6 @@ Write-Host "====================================================================
 #
 # Login
 #
-# Connect to Microsoft Teams - the old way
 Write-Host ""
 Write-Host " - Anmeldung bei Teams " -NoNewline
 Write-Host "(Anmeldung im Browser)" -ForegroundColor Yellow
