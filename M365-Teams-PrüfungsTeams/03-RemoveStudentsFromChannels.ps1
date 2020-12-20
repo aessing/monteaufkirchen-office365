@@ -68,7 +68,6 @@ Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Obje
             Write-Host $StudentName -ForegroundColor Cyan
             $MemberExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName | Where-Object {$_.User -eq $Student.upn}
             if ( $MemberExist ) {
-                Write-Host "RUN..." -ForegroundColor Red
                 Remove-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName -User $_.upn
             }
         }
