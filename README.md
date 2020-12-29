@@ -1,5 +1,4 @@
-![Montessori Erding Logo](.media/logo.png)
-![Foto der Montessori-Schule Aufkirchen](.media/schule.jpg)
+![Banner Montessori-Schule Aufkirchen](docs/images/banner.jpg)
 
 Dieses Repository enthält Projekte, der [Montessori-Schule Aufkirchen](http://www.montessori-erding.de/schule/) bzw. des [Montessori-Verein Landkreis Erding e.V](http://www.montessori-erding.de/verein/).
 
