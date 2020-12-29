@@ -1,4 +1,4 @@
-![Montessori Erding Logo](../.media/logo.png)
+![Montessori Erding Logo](../docs/images/banner.jpg)
 
 # Teams für Prüfungen
 
