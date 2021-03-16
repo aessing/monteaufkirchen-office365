@@ -23,7 +23,7 @@ Das Skript muss mit zwei Parametern aufgerufen werden:
   - Name  
   - Beschreibung  
   ```PowerShell
-  .\01-CreateTeam.ps1 -Name "Prüfung 2020-21" -Beschreibung "Prüfungen im Jahrgang 2020/21"
+  .\01-CreateTeam.ps1 -Name "Prüfung 2020-21" -Beschreibung "Prüfungen im Jahrgang 2020/21" -LehrerCSV .\lehrer.csv -SchuelerCSV .\schueler.csv
   ```
 > :exclamation: Pro Team können maximal 30 private Kanäle angelegt werden. Somit können maximal 30 SchülerInnen pro Team die Prüfung durchführen. Bei mehr Schülern müssen evtl. mehrere Teams erstellt werden.
 
@@ -32,7 +32,7 @@ Dieses Skript fügt jeden SchülerIn mithilfe der _schueler.csv_ als Member zu s
 Das Skript muss mit einem Parameter aufgerufen werden:  
   - Name  
   ```PowerShell
-  .\02-AddStudentsToChannels.ps1 -Name "Prüfung 2020-21"
+  .\02-AddStudentsToChannels.ps1 -Name "Prüfung 2020-21" -SchuelerCSV .\schueler.csv
   ```
 
 - __03-RemoveStudentsFromChannels.ps1__  
@@ -40,7 +40,7 @@ Dieses Skript entfernt jeden SchülerIn mithilfe der _schueler.csv_ aus seinem K
 Das Skript muss mit einem Parameter aufgerufen werden:  
   - Name  
   ```PowerShell
-  .\03-RemoveStudentsFromChannels.ps1 -Name "Prüfung 2020-21"
+  .\03-RemoveStudentsFromChannels.ps1 -Name "Prüfung 2020-21" -SchuelerCSV .\schueler.csv
   ```
 
 - __04-ArchiveTeam.ps1__  
@@ -99,5 +99,5 @@ Alternativ geht dieses auch mittels der [Anleitung für die manuelle Installatio
 Um nun Teams aus der PowerShell verwalten zu können, [benötigen wir das Teams-PowerShell-Modul](https://docs.microsoft.com/de-de/MicrosoftTeams/teams-powershell-install). Dazu muss der folgende Befehl in der gerade installierten PowerShell ausgeführt werden.
 
 ```Powershell
-Install-Module MicrosoftTeams -AllowPrerelease -RequiredVersion "1.1.9-preview" -Scope CurrentUser
+Install-Module MicrosoftTeams -AllowPrerelease -RequiredVersion "1.1.11-preview" -Scope CurrentUser
 ```

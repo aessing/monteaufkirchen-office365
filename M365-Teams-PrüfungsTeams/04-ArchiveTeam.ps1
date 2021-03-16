@@ -19,7 +19,7 @@ param (
     [string]$Name
 )
 
-Import-Module MicrosoftTeams -RequiredVersion "1.1.9"
+Import-Module MicrosoftTeams -RequiredVersion "1.1.11"
 
 ###############################################################################
 #
@@ -30,7 +30,7 @@ Write-Host ""
 Write-Host "==============================================================================="
 Write-Host "| Team für Prüfungen wird archiviert"
 Write-Host "|"
-Write-Host "| Team Name:         " -NoNewline
+Write-Host "| Team Name: " -NoNewline
 Write-Host $Name -ForegroundColor Cyan
 Write-Host "==============================================================================="
 
