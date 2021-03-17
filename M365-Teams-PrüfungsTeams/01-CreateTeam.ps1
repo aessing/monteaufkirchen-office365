@@ -62,6 +62,9 @@ Connect-MicrosoftTeams | Out-Null
 #
 # Erstelle das Prüfungs Team
 #
+$Name = $Name.Trim()
+$Beschreibung = $Beschreibung.Trim()
+
 $MailNickName = $Name -creplace "ü","ue" -creplace "ä","ae" -creplace "ö","oe" `
                       -creplace "Ü","Ue" -creplace "Ä","Ae" -creplace "Ö","Oe" `
                       -replace "ß","ss" `
@@ -91,9 +94,10 @@ Write-Host ""
 Write-Host " - Erstelle Kanäle für die Prüfungen der SchülerInnen"
 Import-Csv -Path $SchuelerCSV | ForEach-Object{
     $ChannelName = $_.channel
+    $ChannelName = $ChannelName.Trim()
     Write-Host "     - Erstelle Kanal: " -NoNewline
     Write-Host $ChannelName -ForegroundColor Cyan
-    New-TeamChannel -GroupId $GroupId.GroupId -DisplayName $_.channel -MembershipType Private | Out-Null
+    New-TeamChannel -GroupId $GroupId.GroupId -DisplayName $ChannelName -MembershipType Private | Out-Null
 }
 
 ###############################################################################
@@ -104,9 +108,10 @@ Write-Host ""
 Write-Host " - Berechtige LehrerInnen als Owner im Team"
 Import-Csv -Path $LehrerCSV | ForEach-Object{ 
     $TeacherName = $_.upn
+    $TeacherName = $TeacherName.Trim()
     Write-Host "     - Berechtige LehrerIn: " -NoNewline
     Write-Host $TeacherName -ForegroundColor Cyan
-    Add-TeamUser -GroupId $GroupId.GroupId -user $_.upn -Role Owner
+    Add-TeamUser -GroupId $GroupId.GroupId -user $TeacherName -Role Owner
 }
 
 ###############################################################################
@@ -118,6 +123,7 @@ Write-Host " - Berechtige LehrerInnen als Owner in den Kanälen der SchülerInne
 Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Object {
     $TeamChannel = $_
     $TeamChannelName = $TeamChannel.DisplayName
+    $TeamChannelName = $TeamChannelName.Trim()
     Write-Host ""
     Write-Host "     - Berechtige LehrerInnen im Kanal: " -NoNewline
     Write-Host $TeamChannelName -ForegroundColor Cyan
@@ -125,17 +131,18 @@ Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Obje
     Import-Csv -Path $LehrerCSV | ForEach-Object{ 
         $Teacher = $_
         $TeacherName = $Teacher.upn
+        $TeacherName = $TeacherName.Trim()
         Write-Host "         - Berechtige LehrerIn: " -NoNewline
         Write-Host $TeacherName  -ForegroundColor Cyan
 
-        $MemberExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName | Where-Object {$_.User -eq $Teacher.upn}
+        $MemberExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannelName | Where-Object {$_.User -eq $TeacherName}
         if ( -not $MemberExist ) {
-            Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName -User $_.upn
+            Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannelName -User $_.upn
         }
 
-        $OwnerExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName -Role Owner | Where-Object {$_.User -eq $Teacher.upn}
+        $OwnerExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannelName -Role Owner | Where-Object {$_.User -eq $TeacherName}
         if ( -not $OwnerExist ) {
-            Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName -User $_.upn -Role Owner
+            Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannelName -User $_.upn -Role Owner
         }
     }
 }
@@ -148,9 +155,10 @@ Write-Host ""
 Write-Host " - Berechtige SchülerInnen als Member im Team"
 Import-Csv -Path $SchuelerCSV | ForEach-Object{ 
     $StudentName = $_.upn
+    $StudentName = $StudentName.Trim()
     Write-Host "     - Berechtige SchülerIn: " -NoNewline
     Write-Host $StudentName  -ForegroundColor Cyan
-    Add-TeamUser -GroupId $GroupId.GroupId -user $_.upn -Role Member
+    Add-TeamUser -GroupId $GroupId.GroupId -user $StudentName -Role Member
 }
 
 ###############################################################################

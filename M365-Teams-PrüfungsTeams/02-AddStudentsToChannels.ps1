@@ -54,11 +54,12 @@ Connect-MicrosoftTeams | Out-Null
 #
 # Füge SchülerInnen als Member zu jedem Kanal hinzu
 #
-$GroupId = Get-Team -DisplayName $Name
+$GroupId = Get-Team -DisplayName $Name.Trim()
 
 Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Object {
     $TeamChannel = $_
     $TeamChannelName = $TeamChannel.DisplayName
+    $TeamChannelName = $TeamChannelName.Trim()
     Write-Host ""
     Write-Host " - Füge SchülerInnen zum Kanal hinzu: " -NoNewline
     Write-Host $TeamChannelName -ForegroundColor Cyan
@@ -66,13 +67,14 @@ Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Obje
     Import-Csv -Path $SchuelerCSV | ForEach-Object{ 
         $Student = $_
         $StudentName = $Student.upn
+        $StudentName = $StudentName.Trim()
 
-        if ($Student.channel -eq $TeamChannel.DisplayName) {
+        if ($Student.channel -eq $TeamChannelName) {
             Write-Host "     - SchülerIn: " -NoNewline
             Write-Host $StudentName -ForegroundColor Cyan
-            $MemberExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName | Where-Object {$_.User -eq $Student.upn}
+            $MemberExist = Get-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannelName | Where-Object {$_.User -eq $StudentName}
             if ( -not $MemberExist ) {
-                Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannel.DisplayName -User $_.upn
+                Add-TeamChannelUser -GroupId $GroupId.GroupId -DisplayName $TeamChannelName -User $_.upn
             }
         }
     }
