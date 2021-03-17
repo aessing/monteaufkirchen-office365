@@ -16,10 +16,13 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)]
-    [string]$Name
+    [string]$Name,
+
+    [Parameter(Mandatory=$true)]
+    [string]$SchuelerCSV
 )
 
-Import-Module MicrosoftTeams -RequiredVersion "1.1.9"
+Import-Module MicrosoftTeams -RequiredVersion "1.1.11"
 
 ###############################################################################
 #
@@ -32,8 +35,10 @@ Write-Host "| SchülerInnen werden aus Ihren Kanälen entfernt"
 Write-Host "| " -NoNewline
 Write-Host "Zugriff wird verweigert" -ForegroundColor Red
 Write-Host "|"
-Write-Host "| Team Name: " -NoNewline
+Write-Host "| Team Name:         " -NoNewline
 Write-Host $Name -ForegroundColor Cyan
+Write-Host "| Schüler CSV-Datei: " -NoNewline
+Write-Host $SchuelerCSV -ForegroundColor Cyan
 Write-Host "==============================================================================="
 
 ###############################################################################
@@ -58,7 +63,7 @@ Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Obje
     Write-Host " - Entferne SchülerInnen aus dem Kanal: " -NoNewline
     Write-Host $TeamChannelName -ForegroundColor Cyan
 
-    Import-Csv -Path "schueler.csv" | ForEach-Object{ 
+    Import-Csv -Path $SchuelerCSV | ForEach-Object{ 
         $Student = $_
         $StudentName = $Student.upn
 

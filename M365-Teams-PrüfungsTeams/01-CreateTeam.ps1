@@ -19,10 +19,16 @@ param (
     [string]$Name,
 
     [Parameter(Mandatory=$true)]
-    [string]$Beschreibung
+    [string]$Beschreibung,
+
+    [Parameter(Mandatory=$true)]
+    [string]$LehrerCSV,
+
+    [Parameter(Mandatory=$true)]
+    [string]$SchuelerCSV
 )
 
-Import-Module MicrosoftTeams -RequiredVersion "1.1.9"
+Import-Module MicrosoftTeams -RequiredVersion "1.1.11"
 
 ###############################################################################
 #
@@ -37,6 +43,10 @@ Write-Host "| Team Name:         " -NoNewline
 Write-Host $Name -ForegroundColor Cyan
 Write-Host "| Team Beschreibung: " -NoNewline
 Write-Host $Beschreibung -ForegroundColor Cyan
+Write-Host "| Lehrer CSV-Datei:  " -NoNewline
+Write-Host $LehrerCSV -ForegroundColor Cyan
+Write-Host "| Schüler CSV-Datei: " -NoNewline
+Write-Host $SchuelerCSV -ForegroundColor Cyan
 Write-Host "==============================================================================="
 
 ###############################################################################
@@ -79,7 +89,7 @@ $GroupId = New-Team -DisplayName $Name -Description $Beschreibung -Visibility Pr
 #
 Write-Host ""
 Write-Host " - Erstelle Kanäle für die Prüfungen der SchülerInnen"
-Import-Csv -Path "schueler.csv" | ForEach-Object{
+Import-Csv -Path $SchuelerCSV | ForEach-Object{
     $ChannelName = $_.channel
     Write-Host "     - Erstelle Kanal: " -NoNewline
     Write-Host $ChannelName -ForegroundColor Cyan
@@ -92,7 +102,7 @@ Import-Csv -Path "schueler.csv" | ForEach-Object{
 #
 Write-Host ""
 Write-Host " - Berechtige LehrerInnen als Owner im Team"
-Import-Csv -Path "lehrer.csv" | ForEach-Object{ 
+Import-Csv -Path $LehrerCSV | ForEach-Object{ 
     $TeacherName = $_.upn
     Write-Host "     - Berechtige LehrerIn: " -NoNewline
     Write-Host $TeacherName -ForegroundColor Cyan
@@ -112,7 +122,7 @@ Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Obje
     Write-Host "     - Berechtige LehrerInnen im Kanal: " -NoNewline
     Write-Host $TeamChannelName -ForegroundColor Cyan
 
-    Import-Csv -Path "lehrer.csv" | ForEach-Object{ 
+    Import-Csv -Path $LehrerCSV | ForEach-Object{ 
         $Teacher = $_
         $TeacherName = $Teacher.upn
         Write-Host "         - Berechtige LehrerIn: " -NoNewline
@@ -136,7 +146,7 @@ Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Obje
 #
 Write-Host ""
 Write-Host " - Berechtige SchülerInnen als Member im Team"
-Import-Csv -Path "schueler.csv" | ForEach-Object{ 
+Import-Csv -Path $SchuelerCSV | ForEach-Object{ 
     $StudentName = $_.upn
     Write-Host "     - Berechtige SchülerIn: " -NoNewline
     Write-Host $StudentName  -ForegroundColor Cyan
