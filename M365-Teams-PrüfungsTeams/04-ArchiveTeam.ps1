@@ -19,7 +19,7 @@ param (
     [string]$Name
 )
 
-Import-Module MicrosoftTeams -RequiredVersion "1.1.11"
+Import-Module MicrosoftTeams -RequiredVersion "5.1.0"
 
 ###############################################################################
 #

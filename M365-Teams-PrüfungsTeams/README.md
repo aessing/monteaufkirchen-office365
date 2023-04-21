@@ -54,7 +54,7 @@ Das Skript muss mit einem Parameter aufgerufen werden:
 ### Unterstützende Dateien
 
 - __lehrer.csv__  
-Im _lehrer.csv_ müssen die UPNS (Office 365 Mail-Adressen) aller LehrerInnen gelistet werden, die an der Prüfung mitarbeiten.  
+Im _lehrer.csv_ müssen die UPNS (Office 365 Mail-Adressen) aller LehrerInnen gelistet werden, die an der Prüfung mitarbeiten. Der Ersteller des Teams, also die Person die das Skript "01-CreateTeam.ps1" asuführt, wird automatisch als Owner hinzugefügt. 
 ```
 upn
 lehrer01@domäne.de
@@ -99,5 +99,5 @@ Alternativ geht dieses auch mittels der [Anleitung für die manuelle Installatio
 Um nun Teams aus der PowerShell verwalten zu können, [benötigen wir das Teams-PowerShell-Modul](https://docs.microsoft.com/de-de/MicrosoftTeams/teams-powershell-install). Dazu muss der folgende Befehl in der gerade installierten PowerShell ausgeführt werden.
 
 ```Powershell
-Install-Module MicrosoftTeams -AllowPrerelease -RequiredVersion "1.1.11-preview" -Scope CurrentUser
+Install-Module MicrosoftTeams -AllowPrerelease -RequiredVersion "5.1.0" -Scope CurrentUser
 ```

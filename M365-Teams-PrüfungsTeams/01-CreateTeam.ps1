@@ -28,7 +28,7 @@ param (
     [string]$SchuelerCSV
 )
 
-Import-Module MicrosoftTeams -RequiredVersion "1.1.11"
+Import-Module MicrosoftTeams -RequiredVersion "5.1.0"
 
 ###############################################################################
 #
@@ -88,20 +88,6 @@ $GroupId = New-Team -DisplayName $Name -Description $Beschreibung -Visibility Pr
 
 ###############################################################################
 #
-# Erstelle die Kanäle für die SchülerInnen
-#
-Write-Host ""
-Write-Host " - Erstelle Kanäle für die Prüfungen der SchülerInnen"
-Import-Csv -Path $SchuelerCSV | ForEach-Object{
-    $ChannelName = $_.channel
-    $ChannelName = $ChannelName.Trim()
-    Write-Host "     - Erstelle Kanal: " -NoNewline
-    Write-Host $ChannelName -ForegroundColor Cyan
-    New-TeamChannel -GroupId $GroupId.GroupId -DisplayName $ChannelName -MembershipType Private | Out-Null
-}
-
-###############################################################################
-#
 # Füge LehrerInnen als Owner zum Team hinzu
 #
 Write-Host ""
@@ -112,6 +98,20 @@ Import-Csv -Path $LehrerCSV | ForEach-Object{
     Write-Host "     - Berechtige LehrerIn: " -NoNewline
     Write-Host $TeacherName -ForegroundColor Cyan
     Add-TeamUser -GroupId $GroupId.GroupId -user $TeacherName -Role Owner
+}
+
+###############################################################################
+#
+# Erstelle die Kanäle für die SchülerInnen
+#
+Write-Host ""
+Write-Host " - Erstelle Kanäle für die Prüfungen der SchülerInnen"
+Import-Csv -Path $SchuelerCSV | ForEach-Object{
+    $ChannelName = $_.channel
+    $ChannelName = $ChannelName.Trim()
+    Write-Host "     - Erstelle Kanal: " -NoNewline
+    Write-Host $ChannelName -ForegroundColor Cyan
+    New-TeamChannel -GroupId $GroupId.GroupId -DisplayName $ChannelName -MembershipType Private | Out-Null
 }
 
 ###############################################################################
