@@ -54,7 +54,7 @@ Connect-MicrosoftTeams | Out-Null
 #
 # Füge SchülerInnen als Member zu jedem Kanal hinzu
 #
-$GroupId = Get-Team -DisplayName $Name.Trim()
+$GroupId = Get-Team -DisplayName $Name.Trim() | Where-Object Displayname -eq $Name.Trim()
 
 Get-TeamChannel -GroupId $GroupId.GroupId -MembershipType Private | ForEach-Object {
     $TeamChannel = $_
