@@ -47,7 +47,7 @@ Connect-MicrosoftTeams | Out-Null
 #
 # Archiviere Team
 #
-$GroupId = Get-Team -DisplayName $Name.Trim()
+$GroupId = Get-Team -DisplayName $Name.Trim() | Where-Object Displayname -eq $Name.Trim()
 
 Write-Host ""
 Write-Host " - Archiviere das Team: " -NoNewline
